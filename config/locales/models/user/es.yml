@@ -1,0 +1,9 @@
+es:
+  activerecord:
+    models:
+      user: Persona
+    attributes:
+      user:
+        name: Nombre
+        email: Correo Electronico
+        password: Contrasena
