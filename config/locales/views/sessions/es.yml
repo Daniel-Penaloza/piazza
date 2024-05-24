@@ -1,0 +1,5 @@
+es:
+  sessions:
+    new:
+      title: Inicio De Sesion
+      submit: Iniciar
