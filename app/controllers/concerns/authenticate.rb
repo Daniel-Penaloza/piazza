@@ -4,6 +4,8 @@ module Authenticate
   included do
     before_action :authenticate
     before_action :require_login, unless: :logged_in?
+
+    helper_method :logged_in?
   end
 
   class_methods do
@@ -16,8 +18,6 @@ module Authenticate
       skip_before_action :require_login, options
     end
   end
-
-  protected
 
   def logged_in?
     Current.user.present?

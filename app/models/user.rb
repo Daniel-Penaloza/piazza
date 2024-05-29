@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include Authentication
+
   validates :name, presence: true
   validates :email,
             format: { with: URI::MailTo::EMAIL_REGEXP },
@@ -6,28 +8,10 @@ class User < ApplicationRecord
 
   has_many :memberships, dependent: :destroy
   has_many :organizations, through: :memberships
-  has_many :app_sessions
 
   before_validation :strip_extraneous_spaces
 
-  has_secure_password
-  validates :password,
-            presence: true,
-            length: { minimum: 8, maximum: ActiveModel::SecurePassword::MAX_PASSWORD_LENGTH_ALLOWED }
-
   validates :password_confirmation, presence: true
-
-  def self.create_app_session(email:, password:)
-    return nil unless user = User.find_by(email: email.downcase)
-
-    user.app_sessions.create if user.authenticate(password)
-  end
-
-  def authenticate_app_session(app_session_id, token)
-    app_sessions.find(app_session_id).authenticate_token(token)
-  rescue ActiveRecord::RecordNotFound
-    nil
-  end
 
   private
 
