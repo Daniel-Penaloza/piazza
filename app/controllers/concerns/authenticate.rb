@@ -23,10 +23,16 @@ module Authenticate
     Current.user.present?
   end
 
+  protected
+
   def log_in(app_session)
     cookies.encrypted.permanent[:app_session] = {
       value: app_session.to_h
     }
+  end
+
+  def log_out
+    Current.app_session&.destroy
   end
 
   private
